@@ -1,1 +1,3 @@
 # SimpleAutoSync
+
+![](preview.png)
