@@ -6,15 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME   = "simple_sync";
-    public static final String table_name = "student";
-    public static final String column_id   = "id";
-    public static final String column_name = "name";
-    public static final String column_status = "status";
+    public static final String TABLE_NAME = "student";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_STATUS = "status";
 
     // db version
     private static final int DB_VERSION = 1;
@@ -26,17 +24,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String db = "CREATE TABLE " + table_name + "(" +
-                column_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                column_name + " VARCHAR, " +
-                column_status + " TINYINT " +
+        String db = "CREATE TABLE " + TABLE_NAME + "(" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_NAME + " VARCHAR, " +
+                COLUMN_STATUS + " TINYINT " +
                 ")";
         sqLiteDatabase.execSQL(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        String sql = "DROP TABLE IF EXISTS " + table_name;
+        String sql = "DROP TABLE IF EXISTS " + TABLE_NAME;
         sqLiteDatabase.execSQL(sql);
         onCreate(sqLiteDatabase);
     }
@@ -45,9 +43,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db  = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(column_name, name);
-        contentValues.put(column_status, status);
-        db.insert(table_name, null, contentValues);
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_STATUS, status);
+        db.insert(TABLE_NAME, null, contentValues);
         db.close();
 
         return true;
@@ -57,8 +55,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(column_status, status);
-        db.update(table_name, contentValues, column_id + " = " +id, null );
+        contentValues.put(COLUMN_STATUS, status);
+        db.update(TABLE_NAME, contentValues, COLUMN_ID + " = " +id, null );
         db.close();
 
         return true;
@@ -66,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getName() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "SELECT * FROM " + table_name + " ORDER BY " + column_id + " DESC";
+        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_ID + " DESC";
         Cursor result = db.rawQuery(sql, null);
 
         return result;
@@ -74,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getUnsyncedName() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "SELECT * FROM " + table_name + " WHERE " + column_status + "=0";
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_STATUS + "=0";
         Cursor result = db.rawQuery(sql, null);
 
         return result;
